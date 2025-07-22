@@ -1,6 +1,5 @@
-package lv4;
+package challenge;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 class Kiosk {
     private List<Menu> mainMenus;
     private Scanner scanner;
-
+    Basket basket = new Basket();
     public Kiosk(List<Menu> mainMenus) {
         this.mainMenus = mainMenus;
         this.scanner = new Scanner(System.in);
@@ -19,6 +18,8 @@ class Kiosk {
         while (true) {
 
             displayMainMenu();
+
+
             int mainChoice = -1;
             try {
                 mainChoice = scanner.nextInt();
@@ -37,7 +38,7 @@ class Kiosk {
 
 
                 while (true) {
-                    System.out.println("[ " + selectedCategory.getCategoryName() + " MENU ]");
+                    System.out.println("[ " + selectedCategory.getCategoryName().toUpperCase() + " MENU ]");
                     List<Menuitem> items = selectedCategory.getMenuItems();
                     for (Menuitem item : items) {
                         System.out.printf("%d. %s | W %.1f | %s\n",
@@ -73,6 +74,7 @@ class Kiosk {
                     if (selectedItem != null) {
                         System.out.printf("선택한 메뉴: %s | W %.1f | %s\n",
                                 selectedItem.getName(), selectedItem.getPrice(), selectedItem.getDescription());
+                                inputbasket(selectedItem);
                         break;
                     } else {
                         System.out.println("유효하지 않은 메뉴 번호입니다. 다시 선택해주세요.");
@@ -84,7 +86,7 @@ class Kiosk {
         }
         scanner.close();
     }
-    // 메인 메뉴를 출력하는 메서드
+
     private void displayMainMenu() {
         System.out.println("\n[ MAIN MENU ]");
         for (int i = 0; i < mainMenus.size(); i++) {
@@ -92,6 +94,46 @@ class Kiosk {
         }
         System.out.println("0. 종료      | 종료");
         System.out.print("입력: ");
+    }
+
+    private void inputbasket(Menuitem menuitem) {
+
+        System.out.println("위메뉴를 장바구니에 추가하시겠습니까?");
+        System.out.println("1. 확인                    2. 취소");
+        try{
+            int check = scanner.nextInt();
+            if (check == 1) {
+                System.out.println(menuitem.getName() + "이 장바구니에 추가되었습니다.");
+                basket.addItem(menuitem);
+                basket.showbasket();
+            }else if (check == 2) {
+                System.out.println("추가를 취소하셨습니다.");
+                basket.showbasket();
+            }
+        }catch(InputMismatchException e){
+            System.out.println("Error : " +"정수를 입력해주세요");
+        }
+
+    }
+
+    private void showordermenu(){
+        System.out.println("\n[ ORDER MENU ]");
+        System.out.println("4. Orders         | 장바구니를 확인후 주문합니다.");
+        System.out.println("5. Cancle         | 진행중인 주문을 취소합니다.");
+        try{
+            int check = scanner.nextInt();
+            if (check == 4) {
+                System.out.println("아래와 같이 주문하시겠습니까?");
+            }else if (check == 5) {
+                return;
+            }else{
+                throw new IllegalArgumentException("허용되지 않은 숫자 입니다.");
+            }
+        }catch(InputMismatchException e){
+            System.out.println("Error : " +"정수를 입력해주세요");
+        }catch (IllegalArgumentException e){
+            System.out.println("Error : " + e.getMessage());
+        }
     }
 }
 
