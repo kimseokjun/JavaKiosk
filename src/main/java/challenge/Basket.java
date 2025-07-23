@@ -20,6 +20,8 @@ public class Basket {
             for (Menuitem item : menuitems) {
                 System.out.println(item.getName() + " | " + item.getPrice() + " | " + item.getDescription());
             }
+            System.out.println("\n[ Total ]");
+            System.out.println("W  " + gettotalprice());
         }
 
     }
@@ -32,4 +34,7 @@ public class Basket {
         return totalprice;
     }
 
+    public boolean isEmpty() {
+        return menuitems.isEmpty();
+    }
 }

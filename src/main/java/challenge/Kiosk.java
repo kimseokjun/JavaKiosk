@@ -72,9 +72,8 @@ class Kiosk {
                     }
 
                     if (selectedItem != null) {
-                        System.out.printf("선택한 메뉴: %s | W %.1f | %s\n",
-                                selectedItem.getName(), selectedItem.getPrice(), selectedItem.getDescription());
-                                inputbasket(selectedItem);
+                        System.out.println("선택한 메뉴: " + selectedItem.getName() + " | W " + selectedItem.getPrice() + " | " + selectedItem.getDescription());
+                        inputbasket(selectedItem);
                         break;
                     } else {
                         System.out.println("유효하지 않은 메뉴 번호입니다. 다시 선택해주세요.");
@@ -105,10 +104,16 @@ class Kiosk {
             if (check == 1) {
                 System.out.println(menuitem.getName() + "이 장바구니에 추가되었습니다.");
                 basket.addItem(menuitem);
-                basket.showbasket();
+
+                if(!basket.isEmpty()){
+                    showordermenu();
+                }
             }else if (check == 2) {
                 System.out.println("추가를 취소하셨습니다.");
                 basket.showbasket();
+                if(!basket.isEmpty()){
+                    showordermenu();
+                }
             }
         }catch(InputMismatchException e){
             System.out.println("Error : " +"정수를 입력해주세요");
@@ -123,7 +128,10 @@ class Kiosk {
         try{
             int check = scanner.nextInt();
             if (check == 4) {
-                System.out.println("아래와 같이 주문하시겠습니까?");
+                System.out.println("아래와 같이 주문하시겠습니까?\n");
+                System.out.println("[ Orders ]");
+                basket.showbasket();
+                orderormenu();
             }else if (check == 5) {
                 return;
             }else{
@@ -135,5 +143,23 @@ class Kiosk {
             System.out.println("Error : " + e.getMessage());
         }
     }
+
+    private void orderormenu(){
+        System.out.println("1. 주문          2. 메뉴판");
+        try{
+            int check = scanner.nextInt();
+            if (check == 1) {
+                System.out.println("\n주문이 완료되었습니다." + "금액은 W" + basket.gettotalprice() + "입니다.");
+
+            }else if (check == 2) {
+                return;
+            }
+        }catch(InputMismatchException e){
+            System.out.println("Error : " + "정수를 입력해주세요");
+        }catch (IllegalArgumentException e){
+            System.out.println("Error : " + e.getMessage());
+        }
+    }
+
 }
 
