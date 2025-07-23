@@ -149,9 +149,9 @@ class Kiosk {
         try{
             int check = scanner.nextInt();
             if (check == 1) {
-                System.out.println("\n주문이 완료되었습니다." + "금액은 W" + basket.gettotalprice() + "입니다.");
+                discountcal();
 
-            }else if (check == 2) {
+                }else if (check == 2) {
                 return;
             }
         }catch(InputMismatchException e){
@@ -160,6 +160,34 @@ class Kiosk {
             System.out.println("Error : " + e.getMessage());
         }
     }
+    private void discountcal() {
+        double discountRate = 0.0;
+        System.out.println("할인 정보를 입력해주세요.\n" +
+                "1. 국가유공자 : 10% \n" +
+                "2. 군인     :  5%\n" +
+                "3. 학생     :  3%\n" +
+                "4. 일반     :  0%\n");
 
+        int check = scanner.nextInt();
+        DiscountPerson person;
+
+        switch (check) {
+            case 1 : person = DiscountPerson.국가유공자; break;
+            case 2 : person = DiscountPerson.군인; break;
+            case 3 : person = DiscountPerson.학생; break;
+            case 4 : person = DiscountPerson.일반; break;
+            default:
+                System.out.println("해당 사항 없음. 일반으로 적용");
+                person = DiscountPerson.일반;
+        }
+        double discountrate = person.getDiscountRate();
+        double oriinalprice = basket.gettotalprice();
+        double discountprice = oriinalprice * discountrate;
+        double finalprice =  oriinalprice - discountprice;
+        System.out.println("할인 전 가격 : " + oriinalprice);
+        System.out.println("할인율 : " + discountrate);
+        System.out.println("할인 적용 가격 : " + finalprice);
+
+    }
 }
 
